@@ -32,7 +32,7 @@ def load_env(env_path: str = None) -> Dict[str, str]:
 def call_deepseek(
     messages: List[Dict[str, str]],
     temperature: float = 0.3,
-    max_tokens: int = 4096,
+    max_tokens: int = 8192,
     response_json: bool = False,
 ) -> Tuple[str, Dict[str, Any]]:
     load_env()

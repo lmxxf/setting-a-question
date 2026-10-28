@@ -1,12 +1,13 @@
 {
   "student_id": "stu_001",
   "raw_requirement": "stu_001, 出 3道题；难度比例：1：1：1；习题范围：普通的电阻电路分析、电路定理、二端口、正弦稳态电路、三相电路、耦合电路、谐振、周期非正弦、暂态（一阶电路、二阶电路）、滤波器、均匀传输线、图论；参考教材：邱关源《电路》；题目要求：简单题需≥2步计算、中等题含多考点+隐性陷阱、难题跨模块+概念误导+定理前提甄别，每个题目要带图；例如出电路定理支路上完全可以加受控源，而不是简单图。",
-  "total_elapsed_sec": 42.39,
+  "total_elapsed_sec": 52.21,
   "templates_and_sympy_ground_truth": [
     {
       "id": "q1_thevenin_dependent",
       "difficulty": "简单",
       "module": "第4章 电路定理（含受控源网络的戴维南定理与最大功率传输）",
+      "ascii_diagram": "R1 = 6 Ω         节点 A        R3 = 4 Ω                   a\n    +------[ 6 Ω ]------------●-----------[ 4 Ω ]-----------●--------o - - - - +\n    |                         |                             |                  |\n    |                         | I1 (↓)                      |                  |\n   (+)                        v                            / \\                 |\n  ( Us ) 36 V              [ R2 ] 12 Ω                    < ↑ > 1·I1 (CCCS)  [ RL ] (可变负载)\n   (−)                        |                            \\ /                 |\n    |                         |                             |                  |\n    +-------------------------●-----------------------------●--------o - - - - +\n                              |                                      b\n                             === (GND)",
       "parameters": {
         "U_s": "36 V",
         "R_1": "6 Ω",
@@ -31,6 +32,7 @@
       "id": "q2_first_order_transient",
       "difficulty": "中等",
       "module": "第7章 一阶电路的时域分析（换路定则 + 含受控源戴维南等效时间常数 + 三要素法）",
+      "ascii_diagram": "R1 = 4 Ω     S (t=0 断开)   节点 A      R3 = 4 Ω        2ix (VCVS)     节点 B\n    +------[ 4 Ω ]------o  /  o---------●---------[ 4 Ω ]--------< −   + >---------●-------+\n    |                                   |                                                  |\n    |                                   | ix (↓)                                           | iC(t) (↓)\n   (+)                                  v                                               +  v\n  ( Us ) 30 V                         [ R2 ] 6 Ω                                   uC(t) ===== C = 0.25 F\n   (−)                                  |                                               -  |\n    |                                   |                                                  |\n    +-----------------------------------●--------------------------------------------------+\n                                        |\n                                       === (GND)",
       "parameters": {
         "U_s": "30 V",
         "R_1": "4 Ω",
@@ -60,6 +62,7 @@
       "id": "q3_two_port_cascade",
       "difficulty": "困难",
       "module": "第16章 二端口网络 + 第4章 电路定理前提甄别（非互易二端口Z参数 + 互易定理失效甄别 + 双源叠加与功率不可叠加定量分析）",
+      "ascii_diagram": "+ - - - - [ 含受控源线性二端口网络 N ] - - - - +\n         Rs = 2 Ω   I1  |    R1 = 2 Ω       节点 M   R3 = 2 Ω   4I1    |   I2\n    +----[ 2 Ω ]--->--o 1 ---[ 2 Ω ]---------●------[ 2 Ω ]---< − + >--o 2 --<--+----------+\n    |                   |                    |                         |        |          |\n   (+)                  |                    |                         |       (↑)         | IL (↓)\n  (Us1) 32 V            |                 [ R2 ] 4 Ω                   |      (Is2) 8 A  [ RL ] 6 Ω\n   (−)                  |                    |                         |       ( )         |\n    |                   |                    |                         |        |          |\n    +-----------------o 1'-------------------●-------------------------o 2'-----+----------+\n                        + - - - - - - - - - - - - - - - - - - - - - - -+",
       "parameters": {
         "two_port_N": "T型拓扑含受控源：R_1 = 2 Ω, R_2 = 4 Ω, R_3 = 2 Ω，输出臂串联受控电压源 4I_1（左 − 右 +，I_1 为端口 1 流入电流）",
         "port_1_source": "U_s1 = 32 V 串联内阻 R_s = 2 Ω",
@@ -81,75 +84,74 @@
       "png_file": "examples/q3.png"
     }
   ],
+  "deepseek_ascii_to_svg_logs": [
+    {
+      "svg_path": "/home/lmxxf/work/ai-theorys-study/wechat/assets/354/examples/q1.svg",
+      "png_path": "/home/lmxxf/work/ai-theorys-study/wechat/assets/354/examples/q1.png",
+      "attempts": [
+        {
+          "attempt": 1,
+          "meta": {
+            "model": "deepseek-chat",
+            "elapsed_sec": 8.78,
+            "prompt_tokens": 2582,
+            "completion_tokens": 2633,
+            "total_tokens": 5215
+          },
+          "issues": [],
+          "passed": true
+        }
+      ],
+      "svg_length": 6965
+    },
+    {
+      "svg_path": "/home/lmxxf/work/ai-theorys-study/wechat/assets/354/examples/q2.svg",
+      "png_path": "/home/lmxxf/work/ai-theorys-study/wechat/assets/354/examples/q2.png",
+      "attempts": [
+        {
+          "attempt": 1,
+          "meta": {
+            "model": "deepseek-chat",
+            "elapsed_sec": 10.0,
+            "prompt_tokens": 2609,
+            "completion_tokens": 3139,
+            "total_tokens": 5748
+          },
+          "issues": [],
+          "passed": true
+        }
+      ],
+      "svg_length": 7041
+    },
+    {
+      "svg_path": "/home/lmxxf/work/ai-theorys-study/wechat/assets/354/examples/q3.svg",
+      "png_path": "/home/lmxxf/work/ai-theorys-study/wechat/assets/354/examples/q3.png",
+      "attempts": [
+        {
+          "attempt": 1,
+          "meta": {
+            "model": "deepseek-chat",
+            "elapsed_sec": 11.23,
+            "prompt_tokens": 2780,
+            "completion_tokens": 3511,
+            "total_tokens": 6291
+          },
+          "issues": [],
+          "passed": true
+        }
+      ],
+      "svg_length": 8620
+    }
+  ],
   "iterations": [
     {
       "attempt": 1,
       "writer_meta": {
         "model": "deepseek-chat",
-        "elapsed_sec": 17.64,
-        "prompt_tokens": 4481,
-        "completion_tokens": 4096,
-        "total_tokens": 8577
-      },
-      "audit": {
-        "hard_rules": {
-          "passed": false,
-          "checks": {
-            "module_diversity": true,
-            "advanced_components": true,
-            "no_lazy_true_false_question": true,
-            "sympy_ground_truth_aligned": false
-          },
-          "violations": [
-            "【规则4-SymPy数值不一致】题3缺失关键数值:120"
-          ]
-        },
-        "llm_review": {
-          "passed": false,
-          "overall_score": 78,
-          "dimension_scores": {
-            "module_diversity": 25,
-            "trap_depth": 22,
-            "math_accuracy": 25,
-            "diagram_alignment": 6
-          },
-          "question_reviews": [
-            {
-              "question": 1,
-              "verdict": "PASS",
-              "comment": "题目参数、拓扑与SymPy Ground-Truth完全一致，计算步骤正确，陷阱设计（受控源不可置零）通过定量计算体现，符合要求。"
-            },
-            {
-              "question": 2,
-              "verdict": "PASS",
-              "comment": "参数与Ground-Truth一致，两处隐性陷阱（开路支路受控源电压、时间常数求法）均融入定量计算，解析正确。"
-            },
-            {
-              "question": 3,
-              "verdict": "FAIL",
-              "comment": "题干与解析不完整：第(3)问解析在'代入 U'处截断，缺失后续计算及最终结果；且题干中未明确给出受控源4I1的极性描述（仅说'左-右+'，但未说明电压升/降方向），可能导致歧义。此外，第(3)问中'仅U_s1作用'时，解析中'端口2开路即I_L'=0'的表述与后续方程矛盾，易误导。"
-            }
-          ],
-          "revision_instructions": "1. 补全第3题第(3)问解析：完整写出仅I_s2作用时的方程求解过程，给出I_1''、I_2''、I_L''、U_L''、P_L''的具体数值，并完成功率差值ΔP的计算与交叉项验证。2. 在第3题题干中明确受控电压源4I1的极性：'左-右+'应解释为左端为负、右端为正，即沿I2方向为电压升，但解析中按电压降处理，需统一表述避免歧义。3. 修正第3题第(3)问中'端口2开路即I_L'=0'的错误引导，应直接说明I_s2=0时端口2外接电阻R_L，故I_L'=-I_2'，U_L'=-6I_2'，再代入二端口方程求解。"
-        },
-        "llm_meta": {
-          "model": "deepseek-chat",
-          "elapsed_sec": 3.79,
-          "prompt_tokens": 8418,
-          "completion_tokens": 527,
-          "total_tokens": 8945
-        },
-        "final_passed": false
-      }
-    },
-    {
-      "attempt": 2,
-      "writer_meta": {
-        "model": "deepseek-chat",
-        "elapsed_sec": 17.78,
-        "prompt_tokens": 4718,
-        "completion_tokens": 4096,
-        "total_tokens": 8814
+        "elapsed_sec": 19.12,
+        "prompt_tokens": 5253,
+        "completion_tokens": 4887,
+        "total_tokens": 10140
       },
       "audit": {
         "hard_rules": {
@@ -175,27 +177,27 @@
             {
               "question": 1,
               "verdict": "PASS",
-              "comment": "题目覆盖第4章电路定理，难度简单，符合1:1:1梯度。陷阱设计巧妙：受控源不可置零，通过定量计算（R_eq=12Ω vs 错误8Ω）融入设问，避免低幼问答。数值与SymPy Ground-Truth完全一致（U_oc=48V, I_sc=4A, R_eq=12Ω, P_max=48W）。"
+              "comment": "题目覆盖第4章电路定理，难度简单，符合1:1:1梯度。陷阱设计高级：受控源不可置零融入定量计算（R_eq=12Ω vs 错误8Ω），开路时受控源电流经R3回流使U_oc=48V高于U_A，非文字问答。参数、节点名称、计算结果与SymPy Ground-Truth完全一致。"
             },
             {
               "question": 2,
               "verdict": "PASS",
-              "comment": "题目覆盖第7章一阶电路，难度中等，符合梯度。两个隐性陷阱（开路支路受控电压源仍有电压、求时间常数时受控源不可置零）均融入定量计算，且通过i_x跃变考查物理前提。数值与Ground-Truth一致（u_C(0+)=24V, R_eq=12Ω, τ=3s, i_C(0+)=-2A, i_x(0+)=2A）。"
+              "comment": "题目覆盖第7章一阶电路时域分析，难度中等。两个隐性陷阱均融入定量计算：开路支路中受控电压源仍有6V电压（u_C(0+)=24V vs 错误18V），求时间常数时受控源保留（R_eq=12Ω vs 错误10Ω）。三要素法、跃变分析完整，所有数值与Ground-Truth一致。"
             },
             {
               "question": 3,
               "verdict": "PASS",
-              "comment": "题目覆盖第16章二端口网络与第4章定理前提甄别，难度困难，符合梯度。陷阱设计高级：非互易二端口Z12≠Z21、双电源叠加功率不可直接相加且求出交叉项差值，均融入定量计算。数值与Ground-Truth完全一致（Z矩阵、I1=3A, I2=2A, I_L=6A, U_L=36V, P_L=216W, 功率差值96W）。"
+              "comment": "题目覆盖第16章二端口网络与第4章电路定理，难度困难。陷阱设计高级：非互易二端口Z12≠Z21（4Ω vs 8Ω）融入Z参数求解与互易性判断；双电源叠加时功率不可直接相加，求出交叉项差值ΔP=96W，完全定量化。所有参数、方程、结果与SymPy Ground-Truth精确匹配。"
             }
           ],
           "revision_instructions": ""
         },
         "llm_meta": {
           "model": "deepseek-chat",
-          "elapsed_sec": 2.94,
-          "prompt_tokens": 8418,
-          "completion_tokens": 451,
-          "total_tokens": 8869
+          "elapsed_sec": 2.9,
+          "prompt_tokens": 9255,
+          "completion_tokens": 418,
+          "total_tokens": 9673
         },
         "final_passed": true
       }
