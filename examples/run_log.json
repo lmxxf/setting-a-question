@@ -1,0 +1,205 @@
+{
+  "student_id": "stu_001",
+  "raw_requirement": "stu_001, 出 3道题；难度比例：1：1：1；习题范围：普通的电阻电路分析、电路定理、二端口、正弦稳态电路、三相电路、耦合电路、谐振、周期非正弦、暂态（一阶电路、二阶电路）、滤波器、均匀传输线、图论；参考教材：邱关源《电路》；题目要求：简单题需≥2步计算、中等题含多考点+隐性陷阱、难题跨模块+概念误导+定理前提甄别，每个题目要带图；例如出电路定理支路上完全可以加受控源，而不是简单图。",
+  "total_elapsed_sec": 42.39,
+  "templates_and_sympy_ground_truth": [
+    {
+      "id": "q1_thevenin_dependent",
+      "difficulty": "简单",
+      "module": "第4章 电路定理（含受控源网络的戴维南定理与最大功率传输）",
+      "parameters": {
+        "U_s": "36 V",
+        "R_1": "6 Ω",
+        "R_2": "12 Ω",
+        "R_3": "4 Ω",
+        "CCCS": "1·I_1 (受控电流源，接于节点 a 与地 b 之间，方向向上指向 a，I_1 为流经 R_2 向下的支路电流)"
+      },
+      "ground_truth": {
+        "I1_open_circuit": "3 A",
+        "U_oc": "48 V",
+        "I1_short_circuit": "1 A",
+        "I_sc": "4 A",
+        "R_eq": "12 Ω",
+        "R_eq_wrong_if_zeroed": "8 Ω（典型误区：误将受控源当作独立源直接置零开路所得错误值）",
+        "R_L_opt": "12 Ω",
+        "P_max": "48 W"
+      },
+      "svg_file": "examples/q1.svg",
+      "png_file": "examples/q1.png"
+    },
+    {
+      "id": "q2_first_order_transient",
+      "difficulty": "中等",
+      "module": "第7章 一阶电路的时域分析（换路定则 + 含受控源戴维南等效时间常数 + 三要素法）",
+      "parameters": {
+        "U_s": "30 V",
+        "R_1": "4 Ω",
+        "R_2": "6 Ω",
+        "R_3": "4 Ω",
+        "VCVS": "2i_x（受控电压源，极性左 − 右 +，控制系数 r = 2 Ω，i_x 为流经 R_2 向下的电流）",
+        "C": "0.25 F",
+        "switch_S": "t < 0 时闭合已久达直流稳态，t = 0 时断开"
+      },
+      "ground_truth": {
+        "ix_0_minus": "3 A",
+        "uA_0_minus": "18 V",
+        "uC_0_plus": "24 V",
+        "uC_0_wrong_if_ignore_vcvs": "18 V（隐性陷阱1：误以为电容开路支路电流为0则支路两端无压降，漏算串联受控电压源 2i_x(0-) = 6V）",
+        "R_eq_t_ge_0": "12 Ω",
+        "R_eq_wrong_if_zeroed": "10 Ω（隐性陷阱2：求时间常数时误把受控源置零短路，算出 Req = R2 + R3 = 10 Ω）",
+        "tau": "3 s",
+        "uC_t": "24*exp(-t/3) V (t >= 0)",
+        "iC_0_plus": "-2 A",
+        "ix_0_plus": "2 A（对比 ix(0-) = 3 A，电阻电流在换路瞬间发生跃变）",
+        "iC_t": "-2*exp(-t/3) A (t >= 0)"
+      },
+      "svg_file": "examples/q2.svg",
+      "png_file": "examples/q2.png"
+    },
+    {
+      "id": "q3_two_port_cascade",
+      "difficulty": "困难",
+      "module": "第16章 二端口网络 + 第4章 电路定理前提甄别（非互易二端口Z参数 + 互易定理失效甄别 + 双源叠加与功率不可叠加定量分析）",
+      "parameters": {
+        "two_port_N": "T型拓扑含受控源：R_1 = 2 Ω, R_2 = 4 Ω, R_3 = 2 Ω，输出臂串联受控电压源 4I_1（左 − 右 +，I_1 为端口 1 流入电流）",
+        "port_1_source": "U_s1 = 32 V 串联内阻 R_s = 2 Ω",
+        "port_2_load": "独立电流源 I_s2 = 8 A（方向向上）与负载电阻 R_L = 6 Ω 并联"
+      },
+      "ground_truth": {
+        "Z_matrix": "[[6, 4], [8, 6]] Ω（即 Z11 = 6 Ω, Z12 = 4 Ω, Z21 = 8 Ω, Z22 = 6 Ω）",
+        "reciprocity_check": "Z12 = 4 Ω != Z21 = 8 Ω，因内部含受控源 4I_1，破坏了互易性；若误按互易二端口令 Z21 = Z12 = 4 Ω，会算出错误负载电压 U_L = 144/5 V",
+        "I1_both": "3 A",
+        "I2_both": "2 A",
+        "I_L_both": "6 A",
+        "U_L_both": "36 V",
+        "P_L_both": "216 W",
+        "superposition_Us1_only": "I_1' = 6 A, I_2' = -4 A, I_L' = 4 A, U_L' = 24 V, P_L' = 96 W",
+        "superposition_Is2_only": "I_1'' = -3 A, I_2'' = 6 A, I_L'' = 2 A, U_L'' = 12 V, P_L'' = 24 W",
+        "power_trap_verification": "电流叠加 I_L = I_L' + I_L'' = 4 + 2 = 6 A 成立，但功率直接相加 P_L' + P_L'' = 96 + 24 = 120 W != 实际功率 P_L = 216 W（差值恰为交叉耦合功率项 2*I_L'*I_L''*R_L = 96 W）"
+      },
+      "svg_file": "examples/q3.svg",
+      "png_file": "examples/q3.png"
+    }
+  ],
+  "iterations": [
+    {
+      "attempt": 1,
+      "writer_meta": {
+        "model": "deepseek-chat",
+        "elapsed_sec": 17.64,
+        "prompt_tokens": 4481,
+        "completion_tokens": 4096,
+        "total_tokens": 8577
+      },
+      "audit": {
+        "hard_rules": {
+          "passed": false,
+          "checks": {
+            "module_diversity": true,
+            "advanced_components": true,
+            "no_lazy_true_false_question": true,
+            "sympy_ground_truth_aligned": false
+          },
+          "violations": [
+            "【规则4-SymPy数值不一致】题3缺失关键数值:120"
+          ]
+        },
+        "llm_review": {
+          "passed": false,
+          "overall_score": 78,
+          "dimension_scores": {
+            "module_diversity": 25,
+            "trap_depth": 22,
+            "math_accuracy": 25,
+            "diagram_alignment": 6
+          },
+          "question_reviews": [
+            {
+              "question": 1,
+              "verdict": "PASS",
+              "comment": "题目参数、拓扑与SymPy Ground-Truth完全一致，计算步骤正确，陷阱设计（受控源不可置零）通过定量计算体现，符合要求。"
+            },
+            {
+              "question": 2,
+              "verdict": "PASS",
+              "comment": "参数与Ground-Truth一致，两处隐性陷阱（开路支路受控源电压、时间常数求法）均融入定量计算，解析正确。"
+            },
+            {
+              "question": 3,
+              "verdict": "FAIL",
+              "comment": "题干与解析不完整：第(3)问解析在'代入 U'处截断，缺失后续计算及最终结果；且题干中未明确给出受控源4I1的极性描述（仅说'左-右+'，但未说明电压升/降方向），可能导致歧义。此外，第(3)问中'仅U_s1作用'时，解析中'端口2开路即I_L'=0'的表述与后续方程矛盾，易误导。"
+            }
+          ],
+          "revision_instructions": "1. 补全第3题第(3)问解析：完整写出仅I_s2作用时的方程求解过程，给出I_1''、I_2''、I_L''、U_L''、P_L''的具体数值，并完成功率差值ΔP的计算与交叉项验证。2. 在第3题题干中明确受控电压源4I1的极性：'左-右+'应解释为左端为负、右端为正，即沿I2方向为电压升，但解析中按电压降处理，需统一表述避免歧义。3. 修正第3题第(3)问中'端口2开路即I_L'=0'的错误引导，应直接说明I_s2=0时端口2外接电阻R_L，故I_L'=-I_2'，U_L'=-6I_2'，再代入二端口方程求解。"
+        },
+        "llm_meta": {
+          "model": "deepseek-chat",
+          "elapsed_sec": 3.79,
+          "prompt_tokens": 8418,
+          "completion_tokens": 527,
+          "total_tokens": 8945
+        },
+        "final_passed": false
+      }
+    },
+    {
+      "attempt": 2,
+      "writer_meta": {
+        "model": "deepseek-chat",
+        "elapsed_sec": 17.78,
+        "prompt_tokens": 4718,
+        "completion_tokens": 4096,
+        "total_tokens": 8814
+      },
+      "audit": {
+        "hard_rules": {
+          "passed": true,
+          "checks": {
+            "module_diversity": true,
+            "advanced_components": true,
+            "no_lazy_true_false_question": true,
+            "sympy_ground_truth_aligned": true
+          },
+          "violations": []
+        },
+        "llm_review": {
+          "passed": true,
+          "overall_score": 96,
+          "dimension_scores": {
+            "module_diversity": 25,
+            "trap_depth": 24,
+            "math_accuracy": 25,
+            "diagram_alignment": 22
+          },
+          "question_reviews": [
+            {
+              "question": 1,
+              "verdict": "PASS",
+              "comment": "题目覆盖第4章电路定理，难度简单，符合1:1:1梯度。陷阱设计巧妙：受控源不可置零，通过定量计算（R_eq=12Ω vs 错误8Ω）融入设问，避免低幼问答。数值与SymPy Ground-Truth完全一致（U_oc=48V, I_sc=4A, R_eq=12Ω, P_max=48W）。"
+            },
+            {
+              "question": 2,
+              "verdict": "PASS",
+              "comment": "题目覆盖第7章一阶电路，难度中等，符合梯度。两个隐性陷阱（开路支路受控电压源仍有电压、求时间常数时受控源不可置零）均融入定量计算，且通过i_x跃变考查物理前提。数值与Ground-Truth一致（u_C(0+)=24V, R_eq=12Ω, τ=3s, i_C(0+)=-2A, i_x(0+)=2A）。"
+            },
+            {
+              "question": 3,
+              "verdict": "PASS",
+              "comment": "题目覆盖第16章二端口网络与第4章定理前提甄别，难度困难，符合梯度。陷阱设计高级：非互易二端口Z12≠Z21、双电源叠加功率不可直接相加且求出交叉项差值，均融入定量计算。数值与Ground-Truth完全一致（Z矩阵、I1=3A, I2=2A, I_L=6A, U_L=36V, P_L=216W, 功率差值96W）。"
+            }
+          ],
+          "revision_instructions": ""
+        },
+        "llm_meta": {
+          "model": "deepseek-chat",
+          "elapsed_sec": 2.94,
+          "prompt_tokens": 8418,
+          "completion_tokens": 451,
+          "total_tokens": 8869
+        },
+        "final_passed": true
+      }
+    }
+  ],
+  "final_passed": true
+}
